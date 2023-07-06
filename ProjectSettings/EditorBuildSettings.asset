@@ -7,3 +7,4 @@ EditorBuildSettings:
   m_Scenes: []
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: b1801c421bdb6054a82013d14cb9c7d0, type: 2}
+    com.unity.input.settings: {fileID: 11400000, guid: 62b2ec7ea8de5cf46b9a8a45ccfcba4a, type: 2}

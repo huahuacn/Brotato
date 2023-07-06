@@ -67,28 +67,18 @@ public class Viewport : Singleton<Viewport>
         return position;
     }
 
-    public void CameraFollow(GameObject followTarget)
+    public Vector3 FollowPosition(Vector3 main, Vector3 target, Vector3 minPosition, Vector3 maxPosition, float somthing)
     {
-        if (followTarget != null)
-        {
-            //从 摄像机 开始 向 屏幕中心 的2D 坐标 发射 射线
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));//射线
- 
-            Vector3 vec_cam = Camera.main.transform.position;
-            Vector3 dir = ray.direction;
-            float num = (0 - ray.origin.y) / dir.y;//射线上 Y=0的 坐标点
-            var vec = ray.origin + ray.direction * num;//获得 屏幕中心点 对应 Y=0 平面 的坐标点
- 
-            vec = vec - new Vector3(vec_cam.x,0, vec_cam.z);//跟随目标 相对于 摄像机的 偏移值
- 
-            Camera.main.transform.position = -vec + new Vector3(
-                followTarget.transform.position.x,
-                vec_cam.y,
-                followTarget.transform.position.z
-            );//在不改变 摄像机transform.position.y值的情况下 在XZ平面进行移动
-            print("  vec:" + vec);
-        }//
-        else return;
+        if (main == target) return main;
+
+        // target.x = Mathf.Clamp(target.x, minPosition.x, maxPosition.x);
+        // target.y = Mathf.Clamp(target.y, minPosition.y, maxPosition.y);
+        // target.z = main.z;
+
+        var z = main.z;
+        main = Vector3.Lerp(main, target, somthing);
+        main.z = z;
+        return main;
     }
 
 }

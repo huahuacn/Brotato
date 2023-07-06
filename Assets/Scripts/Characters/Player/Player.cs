@@ -9,11 +9,9 @@ public class Player : Character
     [SerializeField] PlayerInput input;
 
     [Header("---- MOVE ----")]
-    [SerializeField] float moveSpeed = 10f;
-    [SerializeField] float accelerationTime = 3f;
+    [SerializeField] float moveSpeed = 0.1f;
     [SerializeField] float decelerationTime = 3f;
 
-    float t = 0f;
     float paddingX = 0.2f;
     float paddingY = 0.2f;
     Vector2 previousVelocity; 
@@ -57,12 +55,22 @@ public class Player : Character
     void Start()
     {
         input.EnableGameplayInput();
+
     }
 
 
     void Move(Vector2 moveInput)
     {
+      
+        // 限制player在grounds
         rigidbody.velocity = moveInput.normalized * moveSpeed;
+        // Vector2 tmp = moveInput.normalized * moveSpeed;
+        // transform.position = transform.position + new Vector3(tmp.x, tmp.y, 0)*Time.deltaTime;
+
+
+        // rigidbody.velocity = Viewport.Instance.FollowPosition(transform.position, moveInput.normalized * moveSpeed, min, max, 0);
+
+        // camera 跟随 player &&  限制camera在grounds
     }
 
     void StopMove()
@@ -70,24 +78,8 @@ public class Player : Character
         rigidbody.velocity = Vector2.zero;
     }
 
-    IEnumerator MoveCoroutine(float time, Vector2 moveVelocity, Quaternion moveRotation)
-    {
-        Debug.Log(moveVelocity);
-        t = 0f;
-        previousVelocity = rigidbody.velocity;
-        previousRotation = transform.rotation;
 
-        while (t < 1f)
-        {
-            t += Time.fixedDeltaTime / time;
-
-            
-
-            yield return waitForFixedUpdate;
-        }
-    }
-
-        // 限制player在view point内
+    // 限制player在view point内
     IEnumerator MoveRangeLimitationCoroutine()
     {
         while(true)

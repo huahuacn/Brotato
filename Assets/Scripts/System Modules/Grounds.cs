@@ -36,10 +36,7 @@ public class Grounds : Singleton<Grounds>
             player.transform.position =  center;
             player.transform.GetChild(0).gameObject.SetActive(true);
 
-            // camera to center
-            // Camera mainCamera =  Camera.main;
-            // center.z -= 20;
-            // mainCamera.transform.position = center;
+            CameraController.Instance.Follow();
         };
         
     }

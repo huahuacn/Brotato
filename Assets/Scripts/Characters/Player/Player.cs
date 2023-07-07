@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Jobs;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -20,6 +21,7 @@ public class Player : Character
     WaitForSeconds waitDecelerationTime;
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate(); 
     Coroutine moveCoroutine;
+    JobHandle moveJobHandle;
 
     new Rigidbody2D rigidbody;
     new Collider2D collider;
@@ -28,10 +30,6 @@ public class Player : Character
     {
         rigidbody = GetComponent<Rigidbody2D>();
         collider = GetComponent<Collider2D>();
-
-        // var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
-        // paddingX = size.x / 2f;
-        // paddingY = size.y / 2f;
 
         rigidbody.gravityScale = 0f;
 
@@ -55,20 +53,14 @@ public class Player : Character
     void Start()
     {
         input.EnableGameplayInput();
-
     }
 
 
     void Move(Vector2 moveInput)
     {
-
         // 限制player在grounds
-        // rigidbody.AddForce(moveInput.normalized * moveSpeed);
-        rigidbody.velocity = moveInput.normalized * moveSpeed;
-
-        // Vector2 tmp = moveInput.normalized * moveSpeed;
-        // transform.position = transform.position + new Vector3(tmp.x, tmp.y, 0)*Time.deltaTime;
-
+        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+        moveCoroutine = StartCoroutine(MoveCoroutine(moveInput.normalized * moveSpeed));
 
         // rigidbody.velocity = Viewport.Instance.FollowPosition(transform.position, moveInput.normalized * moveSpeed, min, max, 0);
 
@@ -77,9 +69,26 @@ public class Player : Character
 
     void StopMove()
     {
-        rigidbody.velocity = Vector2.zero;
+        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
+
+        moveCoroutine = StartCoroutine(MoveCoroutine(Vector2.zero));
     }
 
+    IEnumerator MoveCoroutine(Vector2 moveVelocity)
+    {
+        float t = 0f;
+        Vector3 velocity = Vector3.zero;
+        while (true)
+        {
+            t += Time.fixedDeltaTim;
+            rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, moveVelocity, t);
+
+            CameraController.Instance.Follow();
+            yield return waitForFixedUpdate;
+
+        }
+
+    }
 
     // 限制player在view point内
     IEnumerator MoveRangeLimitationCoroutine()

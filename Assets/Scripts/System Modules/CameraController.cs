@@ -18,6 +18,11 @@ public class CameraController : Singleton<CameraController>
 
     void LateUpdate()
     {
+        // Follow();
+    }
+
+    public void Follow()
+    {
         if (target == null) return;
 
         if (transform.position == target.position) return;
@@ -28,11 +33,6 @@ public class CameraController : Singleton<CameraController>
         Vector3 tmp = Vector3.Lerp(transform.position, targetPos, smoothing);
         tmp.z = -20;
         transform.position = tmp;
-    }
-
-    public void Follow()
-    {
-
     }
 
     void Update() 

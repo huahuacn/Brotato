@@ -61,9 +61,11 @@ public class Player : Character
 
     void Move(Vector2 moveInput)
     {
-      
+
         // 限制player在grounds
+        // rigidbody.AddForce(moveInput.normalized * moveSpeed);
         rigidbody.velocity = moveInput.normalized * moveSpeed;
+
         // Vector2 tmp = moveInput.normalized * moveSpeed;
         // transform.position = transform.position + new Vector3(tmp.x, tmp.y, 0)*Time.deltaTime;
 

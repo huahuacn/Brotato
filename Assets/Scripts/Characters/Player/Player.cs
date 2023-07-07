@@ -78,19 +78,18 @@ public class Player : Character
     {
         float t = 0f;
         Vector3 velocity = Vector3.zero;
-        while (true)
+        while (t < 1f)
         {
-            t += Time.fixedDeltaTim;
+            t += Time.fixedDeltaTime;
             rigidbody.velocity = Vector2.Lerp(rigidbody.velocity, moveVelocity, t);
 
-            CameraController.Instance.Follow();
             yield return waitForFixedUpdate;
 
         }
 
     }
 
-    // 限制player在view point内
+    // 限制player在Grounds内
     IEnumerator MoveRangeLimitationCoroutine()
     {
         while(true)

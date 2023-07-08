@@ -62,9 +62,8 @@ public class Player : Character
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
         moveCoroutine = StartCoroutine(MoveCoroutine(moveInput.normalized * moveSpeed));
 
-        // rigidbody.velocity = Viewport.Instance.FollowPosition(transform.position, moveInput.normalized * moveSpeed, min, max, 0);
-
-        // camera 跟随 player &&  限制camera在grounds
+        // StopCoroutine(nameof(DecelerationCoroutine));
+        // StartCoroutine(nameof(MoveRangeLimitationCoroutine));
     }
 
     void StopMove()
@@ -72,6 +71,8 @@ public class Player : Character
         if (moveCoroutine != null) StopCoroutine(moveCoroutine);
 
         moveCoroutine = StartCoroutine(MoveCoroutine(Vector2.zero));
+
+        // StartCoroutine(nameof(DecelerationCoroutine));
     }
 
     IEnumerator MoveCoroutine(Vector2 moveVelocity)

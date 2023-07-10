@@ -1,6 +1,11 @@
+using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using Unity.Entities;
+using UnityEngine.Events;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -14,6 +19,8 @@ public class EnemyManager : Singleton<EnemyManager>
     [SerializeField] float timeBetweenWaves = 1f; // 等待下一波时间
     [SerializeField] int minEnemyAmount = 4;
     [SerializeField] int maxEnemyAmount = 10;
+
+    public event UnityAction enemyLoad = delegate{};
 
     int waveNumber = 1;
     int enemyAmount;
@@ -33,6 +40,8 @@ public class EnemyManager : Singleton<EnemyManager>
         waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
         waitTimeBetweenWaves = new WaitForSeconds(timeBetweenWaves);
         waitUnitlNoEnemy = new WaitUntil(() => enemyList.Count == 0);
+
+        OnResLoadAsset("Enemy", "Enemy");
     }
 
     IEnumerator Start() 
@@ -41,11 +50,11 @@ public class EnemyManager : Singleton<EnemyManager>
         {
             yield return waitUnitlNoEnemy; // 检测敌人数量=0，产生敌人
 
-            waveUI.SetActive(true);
+            // waveUI.SetActive(true);
 
             yield return waitTimeBetweenWaves; // 等待下一波
 
-            waveUI.SetActive(false);
+            // waveUI.SetActive(false);
 
             yield return StartCoroutine(nameof(RandomlySpawnCoroutine));
         }
@@ -57,7 +66,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         for (int i = 0; i < enemyAmount; i++)
         {
-            // enemyList.Add(PoolManager.Release(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)]));
+            enemyList.Add(PoolManager.Release(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)]));
         }
 
         yield return waitTimeBetweenSpawns;
@@ -66,4 +75,37 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     public void RemoveFromList(GameObject enemy) => enemyList.Remove(enemy);
+
+
+    [System.Obsolete]
+    private void OnResLoadAsset(string key, string lable) 
+    { 
+        Addressables.LoadAssetsAsync<GameObject>(
+            new List<object> { key, lable }, 
+            null, 
+            Addressables.MergeMode.Intersection).Completed += OnCompleteLoadAssets; 
+    } 
+    private void OnCompleteLoadAssets(AsyncOperationHandle<IList<GameObject>> asyncOperationHandle) 
+    { 
+        enemyPrefabs = new GameObject[asyncOperationHandle.Result.Count];
+        Pool[] pool = new Pool[asyncOperationHandle.Result.Count];
+
+        for (int i=0; i < asyncOperationHandle.Result.Count; i ++)
+        {
+            GameObject go = asyncOperationHandle.Result[i].gameObject;
+
+            if (go == null) continue;
+
+            enemyPrefabs[i] = go;
+
+            Pool p = new Pool();
+            p.Prefab =  go;
+            p.Size = 10;
+            pool[i] = p;
+        }
+
+        PoolManager.Instance.Initialized(pool);
+
+        enemyLoad.Invoke();
+    }
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 3251a99d46028224ea402efede8e4f0a
   m_currentHash:
     serializedVersion: 2
-    Hash: 726a1e0e65355e296925048169fb1e4a
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -46,6 +46,8 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 01b462e8475d0dd44ac52cb26d0a8ae7, type: 2}
   - {fileID: 11400000, guid: f19755e4b01eb3e42905c7e08c078005, type: 2}
+  - {fileID: 11400000, guid: 36b290e743e22459990b148d8b036426, type: 2}
+  - {fileID: 11400000, guid: 8b3cac8801c95468a87ef80955b3420a, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -87,6 +89,9 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Enemy
+    - Projectile
+    - Ground
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 19d500d85d1ba9948bf7c75e1bd4d503, type: 2}

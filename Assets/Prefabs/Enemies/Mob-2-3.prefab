@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6704665774469155330}
+  - component: {fileID: 6386153273871005016}
+  - component: {fileID: -7388742564557958275}
   m_Layer: 0
   m_Name: Mob-2-3
   m_TagString: Untagged
@@ -32,6 +34,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6386153273871005016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2437986789228138103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081fe0cc2c201f14c855f775de065011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathVFX: {fileID: 0}
+  maxHealth: 0
+  showOnHeadHealthBar: 1
+  scorePoint: 100
+  deathEnergyBonus: 3
+--- !u!114 &-7388742564557958275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2437986789228138103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0c25c58afbb744aae378f1545634ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  moveRotationAngle: 25
+  projectiles: []
+  muzzle: {fileID: 0}
+  minFireInterval: 0
+  maxFireInterval: 0
+  projectileLaunchSFX:
+    audioClip: {fileID: 0}
+    volume: 0
 --- !u!1 &7602079924850972179
 GameObject:
   m_ObjectHideFlags: 0

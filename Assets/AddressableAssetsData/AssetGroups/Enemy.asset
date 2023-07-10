@@ -10,27 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Enemy
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Enemy
   m_Data:
     m_SerializedData: []
-  m_GUID: 3251a99d46028224ea402efede8e4f0a
+  m_GUID: bdf35fb848375475b8ee6ca98f0eab6a
   m_SerializeEntries:
-  - m_GUID: e507a85d87fdbf34c87360cf123a2280
-    m_Address: Assets/Prefabs
+  - m_GUID: 0665326551f11704eae9f07d9a169e9b
+    m_Address: Enemy01
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Enemy
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b7e87cd94764af4da6addd894243228
+    m_Address: Enemy02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9d0355117b7dba947995b87a7b82dead
-    m_Address: Ground
+  - m_GUID: 8b6eac364d1d0584bb6fdb156f71a098
+    m_Address: Enemy03
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Ground
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6745a642d839ab448b885099e3897385
+    m_Address: Enemy04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: adb95bbb8178fe54ab29db1090701371, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: f8816aba17b9dd249b06b6c2d3db7fce, type: 2}
-    - {fileID: 11400000, guid: f3f488e4b99ce924a862f30a59e00fdc, type: 2}
+    - {fileID: 11400000, guid: e044e6d651bc24e9398d9d377d0ef6ea, type: 2}
+    - {fileID: 11400000, guid: 04e62f4c65b634c7a8765ed13092f1f4, type: 2}

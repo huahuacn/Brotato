@@ -10,27 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Projectile
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Projectile
   m_Data:
     m_SerializedData: []
-  m_GUID: 3251a99d46028224ea402efede8e4f0a
+  m_GUID: bac5e32daca1e44a39746afdc7dc9bbb
   m_SerializeEntries:
-  - m_GUID: e507a85d87fdbf34c87360cf123a2280
-    m_Address: Assets/Prefabs
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9d0355117b7dba947995b87a7b82dead
-    m_Address: Ground
+  - m_GUID: 53a189305d22844f1b73f42acfff817d
+    m_Address: PlayerProjectile1
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Ground
+    - Projectile
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c277a8fb8e1cd47afb35113313bde40b
+    m_Address: PlayerProjectile2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Projectile
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac42a2217c7e34efeb1b4803a3d9d1c8
+    m_Address: PlayerProjectile3
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Projectile
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: adb95bbb8178fe54ab29db1090701371, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: f8816aba17b9dd249b06b6c2d3db7fce, type: 2}
-    - {fileID: 11400000, guid: f3f488e4b99ce924a862f30a59e00fdc, type: 2}
+    - {fileID: 11400000, guid: ba0665ec4130c4a72a8a05ab376ea122, type: 2}
+    - {fileID: 11400000, guid: 537615ee6be6d4d57af04024e33b8953, type: 2}

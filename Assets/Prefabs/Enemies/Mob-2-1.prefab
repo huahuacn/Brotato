@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5352801395161765866}
-  m_Layer: 0
+  - component: {fileID: 819344933454094179}
+  - component: {fileID: 7274940063444267484}
+  m_Layer: 7
   m_Name: Mob-2-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,6 +34,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &819344933454094179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200185237431256712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081fe0cc2c201f14c855f775de065011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathVFX: {fileID: 0}
+  maxHealth: 0
+  showOnHeadHealthBar: 1
+  scorePoint: 100
+  deathEnergyBonus: 3
+--- !u!114 &7274940063444267484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200185237431256712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd0c25c58afbb744aae378f1545634ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  moveRotationAngle: 25
+  projectiles: []
+  muzzle: {fileID: 0}
+  minFireInterval: 0
+  maxFireInterval: 0
+  projectileLaunchSFX:
+    audioClip: {fileID: 0}
+    volume: 0
 --- !u!1 &4389473898500074499
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,7 +82,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389473898500074496}
   - component: {fileID: 4389473898500074497}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire-Ball-Mob-2-1-Texture_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -126,7 +166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389473899008298747}
   - component: {fileID: 4389473899008298744}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mouth-Attack-Mob-2-1-Texture_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389473899229848371}
   - component: {fileID: 4389473899229848368}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mouth-Mob-2-1-Texture_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -294,7 +334,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389473899370960567}
   - component: {fileID: 2166892613313428475}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mob-2-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4389473899876763805}
   - component: {fileID: 4389473899876763802}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body-Mob-2-1-Texture_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

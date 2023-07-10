@@ -50,7 +50,13 @@ public class Grounds : Singleton<Grounds>
             center.z -= 1;
             player.transform.position =  center;
             player.transform.GetChild(0).gameObject.SetActive(true);
-
+            
+            Camera mainCamera = Camera.main;
+            Vector3 mainPosition = mainCamera.transform.position;
+            mainPosition.x = center.x;
+            mainPosition.y = center.y;
+            mainCamera.transform.position = mainPosition;
+            
             CreateBorder();
         };
         

@@ -53,25 +53,16 @@ public class EnemyController : MonoBehaviour
 
     IEnumerator RandomlyMovingCoroutine()
     {
-        transform.position = Viewport.Instance.RandomEnemySpawnPosition(paddingX, paddingY);
         targetPosition = player.transform.position;
-
-        // targetPosition = Viewport.Instance.RandomRightHalfPosition(paddingX, paddingY);
+        transform.position = Viewport.Instance.RandomEnemyBronPosition(targetPosition);
 
         while (gameObject.activeSelf)
         {
-            player = GameObject.FindGameObjectWithTag("Player");
             targetPosition = player.transform.position;
             if (Vector3.Distance(transform.position, targetPosition) >= moveSpeed * Time.fixedDeltaTime)
             {
                 transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
             }
-            else
-            {
-                player = GameObject.FindGameObjectWithTag("Player");
-                targetPosition = player.transform.position;
-            }
-
             yield return waitForFixedUpdate;
         }
     }

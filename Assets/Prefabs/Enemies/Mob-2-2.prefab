@@ -456,12 +456,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd0c25c58afbb744aae378f1545634ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
-  moveRotationAngle: 25
-  projectiles: []
-  muzzle: {fileID: 0}
-  minFireInterval: 0
-  maxFireInterval: 0
-  projectileLaunchSFX:
-    audioClip: {fileID: 0}
-    volume: 0
+  moveSpeed: 5

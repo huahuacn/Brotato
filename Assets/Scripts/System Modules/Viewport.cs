@@ -61,18 +61,13 @@ public class Viewport : Singleton<Viewport>
         return position;
     }
 
-    public Vector3 FollowPosition(Vector3 main, Vector3 target, Vector3 minPosition, Vector3 maxPosition, float somthing)
+    public Vector3 RandomEnemyBronPosition(Vector3 targetPosition)
     {
-        if (main == target) return main;
+        Vector3 position = Vector3.zero;
 
-        // target.x = Mathf.Clamp(target.x, minPosition.x, maxPosition.x);
-        // target.y = Mathf.Clamp(target.y, minPosition.y, maxPosition.y);
-        // target.z = main.z;
+        position.x = targetPosition.x +  Random.Range(-10, 10);
+        position.y =  targetPosition.y+ Random.Range(-10,10);
 
-        var z = main.z;
-        main = Vector3.Lerp(main, target, somthing);
-        main.z = z;
-        return main;
+        return position;
     }
-
 }

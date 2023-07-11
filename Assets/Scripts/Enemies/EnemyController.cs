@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Burst;
+using Unity.Collections;
+using Unity.Jobs;
+using Unity.Mathematics;
 
 public class EnemyController : MonoBehaviour
 {
@@ -17,7 +21,10 @@ public class EnemyController : MonoBehaviour
 
     float paddingX = 0.1f;
     float paddingY = 0.1f;
-    Vector3 targetPosition;
+    NativeReference<float3> nearestTargetPositions;
+    EnemyControllerJob findJob;
+    JobHandle findHandle;
+
     GameObject player;
 
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
@@ -29,8 +36,8 @@ public class EnemyController : MonoBehaviour
         // paddingY = size.y / 2f;
 
         player = GameObject.FindGameObjectWithTag("Player");
-        targetPosition = player.transform.position;
-        
+        nearestTargetPositions = new NativeReference<float3>();
+
         // EnemyManager.Instance.enemyLoad += EnemyLoad;
     }
 
@@ -51,18 +58,47 @@ public class EnemyController : MonoBehaviour
         StopAllCoroutines();
     }
 
+    // IEnumerator RandomlyMovingCoroutine()
+    // {
+    //     targetPosition = player.transform.position;
+    //     transform.position = Viewport.Instance.RandomEnemyBronPosition(targetPosition);
+
+    //     while (gameObject.activeSelf)
+    //     {
+    //         targetPosition = player.transform.position;
+
+
+    //         if (Vector3.Distance(transform.position, targetPosition) >= moveSpeed * Time.fixedDeltaTime)
+    //         {
+    //             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
+    //         }
+    //         yield return waitForFixedUpdate;
+    //     }
+    // }
+
     IEnumerator RandomlyMovingCoroutine()
     {
-        targetPosition = player.transform.position;
+        var targetPosition = player.transform.position;
         transform.position = Viewport.Instance.RandomEnemyBronPosition(targetPosition);
 
         while (gameObject.activeSelf)
         {
             targetPosition = player.transform.position;
-            if (Vector3.Distance(transform.position, targetPosition) >= moveSpeed * Time.fixedDeltaTime)
+
+            findJob = new EnemyControllerJob
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
-            }
+                TargetPositions = player.transform.position,
+                SeekerPositions = transform.position,
+                MoveSpeed = moveSpeed,
+            };
+
+            findJob.NearestTargetPositions.CopyFrom(nearestTargetPositions);
+
+            findHandle = findJob.Schedule();
+            findHandle.Complete();
+
+            transform.position = nearestTargetPositions.Value;
+
             yield return waitForFixedUpdate;
         }
     }

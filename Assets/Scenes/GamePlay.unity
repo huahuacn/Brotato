@@ -937,8 +937,8 @@ MonoBehaviour:
   enemyPrefabs: []
   timeBetweenSpawns: 1
   timeBetweenWaves: 1
-  minEnemyAmount: 4
-  maxEnemyAmount: 10
+  minEnemyAmount: 1000
+  maxEnemyAmount: 2000
 --- !u!1 &2127135547
 GameObject:
   m_ObjectHideFlags: 0

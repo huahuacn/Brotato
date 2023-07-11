@@ -6,10 +6,13 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Unity.Entities;
 using UnityEngine.Events;
+using Unity.Jobs;
+using Unity.Mathematics;
+using Unity.Collections;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
-    public GameObject RandomEnemy => enemyList.Count == 0 ? null : enemyList[Random.Range(0, enemyList.Count)];
+    public GameObject RandomEnemy => enemyList.Count == 0 ? null : enemyList[UnityEngine.Random.Range(0, enemyList.Count)];
     public int WaveNumber => waveNumber;
     public float TimeBetweenWaves => timeBetweenWaves;
     [SerializeField] bool spawnEnemy = true; // 产生敌人开关
@@ -31,6 +34,10 @@ public class EnemyManager : Singleton<EnemyManager>
     WaitForSeconds waitTimeBetweenWaves; // 等待下一波
     WaitUntil waitUnitlNoEnemy;
 
+    NativeArray<float3> TargetPositions;
+    NativeArray<float3> SeekerPositions;
+    NativeArray<float3> NearestTargetPositions;
+
     protected override void Awake()
     {
         base.Awake();
@@ -41,6 +48,7 @@ public class EnemyManager : Singleton<EnemyManager>
         waitTimeBetweenWaves = new WaitForSeconds(timeBetweenWaves);
         waitUnitlNoEnemy = new WaitUntil(() => enemyList.Count == 0);
 
+        
         OnResLoadAsset("Enemy", "Enemy");
     }
 
@@ -61,12 +69,12 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     IEnumerator RandomlySpawnCoroutine()
-    {
+    {        
         enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
 
         for (int i = 0; i < enemyAmount; i++)
         {
-            enemyList.Add(PoolManager.Release(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)]));
+            enemyList.Add(PoolManager.Release(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)]));
         }
 
         yield return waitTimeBetweenSpawns;
@@ -85,6 +93,7 @@ public class EnemyManager : Singleton<EnemyManager>
             null, 
             Addressables.MergeMode.Intersection).Completed += OnCompleteLoadAssets; 
     } 
+
     private void OnCompleteLoadAssets(AsyncOperationHandle<IList<GameObject>> asyncOperationHandle) 
     { 
         enemyPrefabs = new GameObject[asyncOperationHandle.Result.Count];
@@ -100,7 +109,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
             Pool p = new Pool();
             p.Prefab =  go;
-            p.Size = 10;
+            p.Size = 100;
             pool[i] = p;
         }
 

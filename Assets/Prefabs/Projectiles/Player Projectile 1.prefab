@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4001035417984127896}
   - component: {fileID: 4001035417984127898}
   - component: {fileID: 4001035417984127897}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4838,7 +4838,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4001035419152753401}
   - component: {fileID: 4001035419152753402}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4985,7 +4985,7 @@ GameObject:
   - component: {fileID: 8766369848550321140}
   - component: {fileID: 5456928029490907923}
   - component: {fileID: 9159863494419874966}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Player Projectile 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5072,6 +5072,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitVFX: {fileID: 0}
   hitSFX: []
-  damage: 3
+  damage: 10
   moveSpeed: 10
   moveDirection: {x: 1, y: 0}

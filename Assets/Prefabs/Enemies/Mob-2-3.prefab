@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathVFX: {fileID: 0}
-  maxHealth: 0
+  maxHealth: 10
   showOnHeadHealthBar: 1
   scorePoint: 100
   deathEnergyBonus: 3

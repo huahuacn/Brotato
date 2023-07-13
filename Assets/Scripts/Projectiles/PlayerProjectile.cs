@@ -9,16 +9,22 @@ public class PlayerProjectile : Projectile
     {
         trail = GetComponentInChildren<TrailRenderer>();
 
-        if (moveDirection != Vector2.right) transform.GetChild(0).rotation = Quaternion.FromToRotation(Vector2.right, moveDirection);
+        // if (moveDirection != Vector2.right) transform.GetChild(0).rotation = Quaternion.FromToRotation(Vector2.right, moveDirection);
     }
 
     protected override void OnEnable()
     {
-        SetTarget(EnemyManager.Instance.RandomEnemy);
+        SetTarget(EnemyManager.Instance.GetNearestGameObject());
         transform.rotation = Quaternion.identity;
 
-        if (target == null) base.OnEnable();
-        else StartCoroutine(HomingCoroutine(target));
+        if (target == null) 
+        {
+            base.OnEnable();
+        }
+        else 
+        {
+            StartCoroutine(HomingCoroutine(target));
+        }
     }
 
     void OnDisable() 
@@ -29,13 +35,13 @@ public class PlayerProjectile : Projectile
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         base.OnCollisionEnter2D(collision);
+        Debug.Log("Player projectile collisionEnter2D");
     }
     public IEnumerator  HomingCoroutine(GameObject target)
     {
         while(gameObject.activeSelf)
         {
-            if (target.activeSelf) 
-                moveDirection = (target.transform.position - transform.position).normalized;
+            // if (target.activeSelf) moveDirection = (target.transform.position - transform.position).normalized;
             yield return null;
         }
     }

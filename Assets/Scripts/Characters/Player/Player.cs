@@ -12,6 +12,11 @@ public class Player : Character
     [Header("---- MOVE ----")]
     [SerializeField] float moveSpeed = 0.1f;
     [SerializeField] float decelerationTime = 3f;
+    [Header("---- FIRE ----")]
+    [SerializeField] Transform muzzleMiddle;
+    [SerializeField] Transform muzzleTop;
+    [SerializeField] Transform muzzleBottom;
+    [SerializeField] float fireInterval = 0.12f;
 
     float paddingX = 0.2f;
     float paddingY = 0.2f;
@@ -20,6 +25,9 @@ public class Player : Character
 
     WaitForSeconds waitDecelerationTime;
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate(); 
+    WaitForSeconds waitForFireInterval;
+   WaitUntil waitUntilEnemyComplete;
+
     Coroutine moveCoroutine;
     JobHandle moveJobHandle;
 
@@ -34,6 +42,9 @@ public class Player : Character
         rigidbody.gravityScale = 0f;
 
         waitDecelerationTime = new WaitForSeconds(decelerationTime);
+        waitForFireInterval = new WaitForSeconds(fireInterval);
+        waitUntilEnemyComplete = new WaitUntil(() => PoolManager.Instance.ProjectileLoaders.Loaded &&
+        EnemyManager.Instance.EnemyCount > 0 );
     }
 
     protected override void OnEnable() 
@@ -53,8 +64,9 @@ public class Player : Character
     void Start()
     {
         input.EnableGameplayInput();
-    }
 
+        StartCoroutine(nameof(FireCoroutine));
+    }
 
     void Move(Vector2 moveInput)
     {
@@ -106,6 +118,20 @@ public class Player : Character
         yield return waitDecelerationTime;
 
         StopCoroutine(nameof(MoveRangeLimitationCoroutine));
+    }
+
+    IEnumerator FireCoroutine()
+    {
+        while (true)
+        {
+            yield return waitUntilEnemyComplete;
+
+            // Instantiate(projectile, muzzle.position, Quaternion.identity);
+            PoolManager.Release(PoolManager.Instance.ProjectileLoaders.RandomPrefabs, muzzleMiddle.position);
+
+            yield return waitForFireInterval;
+
+        }
     }
 
 }

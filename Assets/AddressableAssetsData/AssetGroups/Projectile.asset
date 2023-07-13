@@ -21,7 +21,7 @@ MonoBehaviour:
     m_Address: PlayerProjectile1
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Projectile
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c277a8fb8e1cd47afb35113313bde40b
     m_Address: PlayerProjectile2
@@ -33,7 +33,7 @@ MonoBehaviour:
     m_Address: PlayerProjectile3
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Projectile
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: adb95bbb8178fe54ab29db1090701371, type: 2}

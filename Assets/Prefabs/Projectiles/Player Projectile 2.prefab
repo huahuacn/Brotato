@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4001035417984127896}
   - component: {fileID: 4001035417984127898}
   - component: {fileID: 4001035417984127897}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4777,7 +4777,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 968462d6188da594e986c3b7f576ae4a, type: 2}
+  - {fileID: 2100000, guid: 61e5210e59e544677b97ab60c901bc2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4819,7 +4819,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_VertexStreams: 00030409
-  m_Mesh: {fileID: -5444485497891700554, guid: 2b2823a4a91200b4b8e20f9956870ddf, type: 3}
+  m_Mesh: {fileID: -5444485497891700554, guid: 1df00fca8d41c451fa702837202a7aa4, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -4838,7 +4838,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4001035419152753401}
   - component: {fileID: 4001035419152753402}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4881,7 +4881,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1b221f73da7858841b5ad3dab4d1a99d, type: 2}
+  - {fileID: 2100000, guid: 61e5210e59e544677b97ab60c901bc2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4985,7 +4985,7 @@ GameObject:
   - component: {fileID: 2795478743804564242}
   - component: {fileID: 1996890219750670342}
   - component: {fileID: 4746116074535877228}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Player Projectile 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5072,6 +5072,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitVFX: {fileID: 0}
   hitSFX: []
-  damage: 0
+  damage: 10
   moveSpeed: 10
-  moveDirection: {x: 0, y: 0}
+  moveDirection: {x: 1, y: 0}

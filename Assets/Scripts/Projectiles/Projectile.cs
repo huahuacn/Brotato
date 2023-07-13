@@ -25,7 +25,7 @@ public class Projectile : MonoBehaviour
             // var contackPoint = collision.GetContact(0);
             // PoolManager.Release(hitVFX, collision.GetContact(0).point, Quaternion.LookRotation(collision.GetContact(0).normal));
 
-            AudioManager.Instance.PlayRandomSFX(hitSFX);
+            // AudioManager.Instance.PlayRandomSFX(hitSFX);
 
             gameObject.SetActive(false);
         }

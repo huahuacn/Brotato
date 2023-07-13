@@ -5,10 +5,19 @@ public class PoolManager : Singleton<PoolManager>
 {
     static Dictionary<GameObject, Pool> dictionary;
 
+    public AddressableLoader EnemyLoaders;
+    public AddressableLoader ProjectileLoaders;
+
     protected override void Awake()
     {
         base.Awake();
         dictionary = new Dictionary<GameObject, Pool>();
+        
+        EnemyLoaders = new AddressableLoader();
+        ProjectileLoaders = new AddressableLoader();
+
+        EnemyLoaders.OnResLoadAsset("Enemy","Enemy");
+        ProjectileLoaders.OnResLoadAsset("Projectile","Projectile");
     }
 
     public void Initialized(Pool[] pools) 

@@ -304,7 +304,7 @@ Transform:
   m_Children:
   - {fileID: 2127135548}
   - {fileID: 1962610602}
-  - {fileID: 1301026223}
+  - {fileID: 1010411749}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -476,7 +476,7 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 1365133406}
   m_ConfineScreenEdges: 1
   m_Damping: 4
---- !u!1 &1301026222
+--- !u!1 &1010411748
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -484,22 +484,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1301026223}
-  - component: {fileID: 1301026224}
+  - component: {fileID: 1010411749}
+  - component: {fileID: 1010411750}
   m_Layer: 0
-  m_Name: PoolManager
+  m_Name: AddressableManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1301026223
+--- !u!4 &1010411749
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301026222}
+  m_GameObject: {fileID: 1010411748}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -508,16 +508,16 @@ Transform:
   m_Father: {fileID: 697636987}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1301026224
+--- !u!114 &1010411750
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301026222}
+  m_GameObject: {fileID: 1010411748}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26cd307bc669c45de8d906e40bb2c89c, type: 3}
+  m_Script: {fileID: 11500000, guid: 7e25ac4a12dfac048a2ff2645142c778, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1365133403
@@ -934,11 +934,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnEnemy: 1
   waveUI: {fileID: 0}
-  enemyPrefabs: []
   timeBetweenSpawns: 1
   timeBetweenWaves: 1
-  minEnemyAmount: 50
-  maxEnemyAmount: 100
+  minEnemyAmount: 1000
+  maxEnemyAmount: 5000
 --- !u!1 &2127135547
 GameObject:
   m_ObjectHideFlags: 0
@@ -1075,6 +1074,14 @@ PrefabInstance:
     - target: {fileID: 4779554010435243917, guid: 238a21698e7d5b74cb10237c3e47e5cf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779554010435243922, guid: 238a21698e7d5b74cb10237c3e47e5cf, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4779554010435243923, guid: 238a21698e7d5b74cb10237c3e47e5cf, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

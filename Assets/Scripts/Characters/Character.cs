@@ -32,7 +32,6 @@ public class Character : MonoBehaviour
     {
         health -= damage;
 
-
         if (health <= 0f) Die();
     }
 

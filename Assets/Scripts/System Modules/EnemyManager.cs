@@ -18,7 +18,6 @@ public class EnemyManager : Singleton<EnemyManager>
     public float TimeBetweenWaves => timeBetweenWaves;
     [SerializeField] bool spawnEnemy = true; // 产生敌人开关
     [SerializeField] GameObject waveUI;
-    [SerializeField] GameObject[] enemyPrefabs;
     [SerializeField] float timeBetweenSpawns = 1f; // 敌人生成时间间隔
     [SerializeField] float timeBetweenWaves = 1f; // 等待下一波时间
     [SerializeField] int minEnemyAmount = 4;
@@ -52,11 +51,9 @@ public class EnemyManager : Singleton<EnemyManager>
         waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
         waitTimeBetweenWaves = new WaitForSeconds(timeBetweenWaves);
         waitUnitlNoEnemy = new WaitUntil(() => enemyList.Count == 0);
-        waitUnitlEnemyPrefabLoad = new WaitUntil(() => enemyPrefabs.Length > 0);
+        waitUnitlEnemyPrefabLoad = new WaitUntil(() => AddressableManager.Instance.EnemyLoaded);
 
         player = GameObject.FindGameObjectWithTag("Player");
-        
-        OnResLoadAsset("Enemy", "Enemy");
     }
 
     IEnumerator Start() 
@@ -78,53 +75,6 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
 
-    // void RandomlySpawnJob()
-    // {
-    //     enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
-
-    //     for (int i = 0; i < TargetPositions.Length; i++)
-    //     {
-    //         TargetPositions[i] = player.transform.position;
-    //     }
-
-    //     for (int i = 0; i < enemyAmount; i++)
-    //     {
-    //         GameObject go = PoolManager.Release(enemyPrefabs[UnityEngine.Random.Range(-1, enemyPrefabs.Length)]);
-    //         SeekerPositions[i] = go.transform.position;
-            
-    //         enemyList.Add(go);
-    //     }
-
-    //     EnemyManagerJob findJob = new EnemyManagerJob
-    //     {
-    //             TargetPositions = TargetPositions,
-    //             SeekerPositions = SeekerPositions,
-    //             NearestTargetPositions = NearestTargetPositions,
-    //     };
-
-    //     JobHandle findHandle = findJob.Schedule(SeekerPositions.Length, 100);
-
-    //     findHandle.Complete();
-
-    //     // yield return waitTimeBetweenSpawns;
-
-    //     waveNumber++;
-    // }
-
-    // IEnumerator RandomlySpawnCoroutine()
-    // {        
-    //     enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
-
-    //     for (int i = 0; i < enemyAmount; i++)
-    //     {
-    //         enemyList.Add(PoolManager.Release(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)]));
-    //     }
-
-    //     yield return waitTimeBetweenSpawns;
-
-    //     waveNumber++;
-    // }
-
     IEnumerator RandomlySpawnCoroutine()
     {        
         enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
@@ -133,7 +83,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         for (int i = 0; i < enemyAmount; i++)
         {
-            GameObject go = PoolManager.Release(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)]);
+            GameObject go = AddressableManager.Release(AddressableManager.Instance.RandomEnemyPrefabs);
             go.transform.position = Viewport.Instance.RandomEnemyBronPosition(player.transform.position);
 
             enemyList.Add(go);
@@ -141,7 +91,6 @@ public class EnemyManager : Singleton<EnemyManager>
         }
 
         transformsAccessArray = new TransformAccessArray(transforms);
-        Debug.Log("transforms.len: " + transforms.Length);
 
         loading = true;
         yield return waitTimeBetweenSpawns;
@@ -152,41 +101,6 @@ public class EnemyManager : Singleton<EnemyManager>
     public void RemoveFromList(GameObject enemy) 
     {
         enemyList.Remove(enemy);
-    }
-
-    
-
-    [System.Obsolete]
-    private void OnResLoadAsset(string key, string lable) 
-    { 
-        Addressables.LoadAssetsAsync<GameObject>(
-            new List<object> { key, lable }, 
-            null, 
-            Addressables.MergeMode.Intersection).Completed += OnCompleteLoadAssets; 
-    } 
-
-    private void OnCompleteLoadAssets(AsyncOperationHandle<IList<GameObject>> asyncOperationHandle) 
-    { 
-        enemyPrefabs = new GameObject[asyncOperationHandle.Result.Count];
-        Pool[] pool = new Pool[asyncOperationHandle.Result.Count];
-
-        for (int i=0; i < asyncOperationHandle.Result.Count; i ++)
-        {
-            GameObject go = asyncOperationHandle.Result[i].gameObject;
-
-            if (go == null) continue;
-
-            enemyPrefabs[i] = go;
-
-            Pool p = new Pool();
-            p.Prefab =  go;
-            p.Size = 100;
-            pool[i] = p;
-        }
-
-        PoolManager.Instance.Initialized(pool);
-
-
     }
 
     void Update() 
@@ -215,4 +129,26 @@ public class EnemyManager : Singleton<EnemyManager>
         // transformsAccessArray.Dispose();
     }
 
+    GameObject GetNearestGameObject(){
+        if(enemyList !=null && enemyList.Count > 0)
+        {
+            GameObject targetTemp = enemyList.Count>0? enemyList[0]:null; 
+            float dis = Vector3.Distance(player.transform.position,enemyList[0].transform.position);
+            float disTemp;
+
+            for(int i=1;i<enemyList.Count;i++){
+                disTemp = Vector3.Distance(player.transform.position,enemyList[i].transform.position);
+
+                if(disTemp < dis){
+                    targetTemp = enemyList[i];
+                    dis = disTemp;
+                }
+            }
+
+            return targetTemp;
+        }else{
+
+            return null;
+        }
+    }
 }

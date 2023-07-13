@@ -65,8 +65,8 @@ public class Viewport : Singleton<Viewport>
     {
         Vector3 position = Vector3.zero;
 
-        position.x = targetPosition.x +  Random.Range(-10, 10);
-        position.y =  targetPosition.y+ Random.Range(-10,10);
+        position.x = targetPosition.x +  Random.Range(-50, 50);
+        position.y =  targetPosition.y+ Random.Range(-50,50);
 
         return position;
     }

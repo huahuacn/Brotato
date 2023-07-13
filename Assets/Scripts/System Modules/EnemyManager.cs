@@ -9,6 +9,7 @@ using UnityEngine.Events;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Collections;
+using UnityEngine.Jobs;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -29,14 +30,18 @@ public class EnemyManager : Singleton<EnemyManager>
     int enemyAmount;
 
     List<GameObject> enemyList;
+    private TransformAccessArray transformsAccessArray;
+    private EnemyPositionUpdateJob enemyPositionUpdateJob;
+    private JobHandle enemyPositionUpdateJobHandle;
+    GameObject player;
+
+    bool loading;
+
 
     WaitForSeconds waitTimeBetweenSpawns; // 等待生成间隔时间
     WaitForSeconds waitTimeBetweenWaves; // 等待下一波
     WaitUntil waitUnitlNoEnemy;
-
-    NativeArray<float3> TargetPositions;
-    NativeArray<float3> SeekerPositions;
-    NativeArray<float3> NearestTargetPositions;
+    WaitUntil waitUnitlEnemyPrefabLoad;
 
     protected override void Awake()
     {
@@ -47,15 +52,20 @@ public class EnemyManager : Singleton<EnemyManager>
         waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
         waitTimeBetweenWaves = new WaitForSeconds(timeBetweenWaves);
         waitUnitlNoEnemy = new WaitUntil(() => enemyList.Count == 0);
+        waitUnitlEnemyPrefabLoad = new WaitUntil(() => enemyPrefabs.Length > 0);
 
+        player = GameObject.FindGameObjectWithTag("Player");
         
         OnResLoadAsset("Enemy", "Enemy");
     }
 
     IEnumerator Start() 
     {
+
         while (spawnEnemy)
         {
+            yield return waitUnitlEnemyPrefabLoad;
+
             yield return waitUnitlNoEnemy; // 检测敌人数量=0，产生敌人
 
             // waveUI.SetActive(true);
@@ -68,22 +78,83 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
 
+    // void RandomlySpawnJob()
+    // {
+    //     enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
+
+    //     for (int i = 0; i < TargetPositions.Length; i++)
+    //     {
+    //         TargetPositions[i] = player.transform.position;
+    //     }
+
+    //     for (int i = 0; i < enemyAmount; i++)
+    //     {
+    //         GameObject go = PoolManager.Release(enemyPrefabs[UnityEngine.Random.Range(-1, enemyPrefabs.Length)]);
+    //         SeekerPositions[i] = go.transform.position;
+            
+    //         enemyList.Add(go);
+    //     }
+
+    //     EnemyManagerJob findJob = new EnemyManagerJob
+    //     {
+    //             TargetPositions = TargetPositions,
+    //             SeekerPositions = SeekerPositions,
+    //             NearestTargetPositions = NearestTargetPositions,
+    //     };
+
+    //     JobHandle findHandle = findJob.Schedule(SeekerPositions.Length, 100);
+
+    //     findHandle.Complete();
+
+    //     // yield return waitTimeBetweenSpawns;
+
+    //     waveNumber++;
+    // }
+
+    // IEnumerator RandomlySpawnCoroutine()
+    // {        
+    //     enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
+
+    //     for (int i = 0; i < enemyAmount; i++)
+    //     {
+    //         enemyList.Add(PoolManager.Release(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)]));
+    //     }
+
+    //     yield return waitTimeBetweenSpawns;
+
+    //     waveNumber++;
+    // }
+
     IEnumerator RandomlySpawnCoroutine()
     {        
         enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
 
+        Transform[] transforms = new Transform[enemyAmount];
+
         for (int i = 0; i < enemyAmount; i++)
         {
-            enemyList.Add(PoolManager.Release(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)]));
+            GameObject go = PoolManager.Release(enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)]);
+            go.transform.position = Viewport.Instance.RandomEnemyBronPosition(player.transform.position);
+
+            enemyList.Add(go);
+            transforms[i] = go.transform;
         }
 
+        transformsAccessArray = new TransformAccessArray(transforms);
+        Debug.Log("transforms.len: " + transforms.Length);
+
+        loading = true;
         yield return waitTimeBetweenSpawns;
 
         waveNumber++;
     }
 
-    public void RemoveFromList(GameObject enemy) => enemyList.Remove(enemy);
+    public void RemoveFromList(GameObject enemy) 
+    {
+        enemyList.Remove(enemy);
+    }
 
+    
 
     [System.Obsolete]
     private void OnResLoadAsset(string key, string lable) 
@@ -115,6 +186,33 @@ public class EnemyManager : Singleton<EnemyManager>
 
         PoolManager.Instance.Initialized(pool);
 
-        enemyLoad.Invoke();
+
     }
+
+    void Update() 
+    {
+        if (!loading) return;
+
+        enemyPositionUpdateJob = new EnemyPositionUpdateJob
+        {
+            velocity = 1f,
+            fixDeltaTime = Time.fixedDeltaTime,
+            playerPosition = player.transform.position,
+        };
+
+        enemyPositionUpdateJobHandle = enemyPositionUpdateJob.Schedule(transformsAccessArray);
+    }
+
+    // 保证当前帧内Job执行完毕
+    private void LateUpdate()
+    {
+        enemyPositionUpdateJobHandle.Complete();
+    }
+
+    // OnDestroy中释放NativeArray的内存
+    private void OnDestroy()
+    {
+        // transformsAccessArray.Dispose();
+    }
+
 }

@@ -21,9 +21,6 @@ public class EnemyController : MonoBehaviour
 
     float paddingX = 0.1f;
     float paddingY = 0.1f;
-    NativeReference<float3> nearestTargetPositions;
-    EnemyControllerJob findJob;
-    JobHandle findHandle;
 
     GameObject player;
 
@@ -36,7 +33,6 @@ public class EnemyController : MonoBehaviour
         // paddingY = size.y / 2f;
 
         player = GameObject.FindGameObjectWithTag("Player");
-        nearestTargetPositions = new NativeReference<float3>();
 
         // EnemyManager.Instance.enemyLoad += EnemyLoad;
     }
@@ -44,23 +40,18 @@ public class EnemyController : MonoBehaviour
     void OnEnable() 
     {
         // StartCoroutine(nameof(RandomlyFireCoroutine));
-        EnemyLoad();
-    }
+        // StartCoroutine(nameof(RandomlyMovingCoroutine));
 
-    void EnemyLoad()
-    {
-        StartCoroutine(nameof(RandomlyMovingCoroutine));
     }
 
     void OnDisable() 
     {
-        EnemyManager.Instance.enemyLoad -= EnemyLoad;
         StopAllCoroutines();
     }
 
     // IEnumerator RandomlyMovingCoroutine()
     // {
-    //     targetPosition = player.transform.position;
+    //     var targetPosition = player.transform.position;
     //     transform.position = Viewport.Instance.RandomEnemyBronPosition(targetPosition);
 
     //     while (gameObject.activeSelf)
@@ -75,33 +66,6 @@ public class EnemyController : MonoBehaviour
     //         yield return waitForFixedUpdate;
     //     }
     // }
-
-    IEnumerator RandomlyMovingCoroutine()
-    {
-        var targetPosition = player.transform.position;
-        transform.position = Viewport.Instance.RandomEnemyBronPosition(targetPosition);
-
-        while (gameObject.activeSelf)
-        {
-            targetPosition = player.transform.position;
-
-            findJob = new EnemyControllerJob
-            {
-                TargetPositions = player.transform.position,
-                SeekerPositions = transform.position,
-                MoveSpeed = moveSpeed,
-            };
-
-            findJob.NearestTargetPositions.CopyFrom(nearestTargetPositions);
-
-            findHandle = findJob.Schedule();
-            findHandle.Complete();
-
-            transform.position = nearestTargetPositions.Value;
-
-            yield return waitForFixedUpdate;
-        }
-    }
 
     // IEnumerator RandomlyFireCoroutine()
     // {

@@ -8,10 +8,15 @@ using UnityEngine.ResourceManagement.AsyncOperations;
  
 public class AddressableManager : Singleton<AddressableManager>
 {
+    static Dictionary<GameObject, Pool> dictionary;
+
     public bool EnemyLoaded;
     public GameObject RandomEnemyPrefabs => enemyPrefabs[UnityEngine.Random.Range(0, enemyPrefabs.Length)];
     GameObject[] enemyPrefabs;
-    static Dictionary<GameObject, Pool> dictionary;
+
+    public bool PlayerProjectilesed;
+    GameObject[] playerProjectilesPrefabs;
+    
 
     protected override void Awake()
     {
@@ -23,6 +28,7 @@ public class AddressableManager : Singleton<AddressableManager>
     void Start()
     {
         OnResLoadAsset("Enemy", "Enemy");
+        OnResLoadAsset("PlayerProjectile", "Projectile");
     }
 
     void LoadAssetAsync(string key)

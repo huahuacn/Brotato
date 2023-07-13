@@ -13,6 +13,7 @@ using UnityEngine.Jobs;
 
 public class EnemyManager : Singleton<EnemyManager>
 {
+    public AddressableLoader addressableLoader;
     public GameObject RandomEnemy => enemyList.Count == 0 ? null : enemyList[UnityEngine.Random.Range(0, enemyList.Count)];
     public int WaveNumber => waveNumber;
     public float TimeBetweenWaves => timeBetweenWaves;
@@ -33,10 +34,7 @@ public class EnemyManager : Singleton<EnemyManager>
     private EnemyPositionUpdateJob enemyPositionUpdateJob;
     private JobHandle enemyPositionUpdateJobHandle;
     GameObject player;
-
     bool loading;
-
-
     WaitForSeconds waitTimeBetweenSpawns; // 等待生成间隔时间
     WaitForSeconds waitTimeBetweenWaves; // 等待下一波
     WaitUntil waitUnitlNoEnemy;
@@ -47,13 +45,16 @@ public class EnemyManager : Singleton<EnemyManager>
         base.Awake();
 
         enemyList = new List<GameObject>();
+        addressableLoader = new AddressableLoader();
 
         waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
         waitTimeBetweenWaves = new WaitForSeconds(timeBetweenWaves);
         waitUnitlNoEnemy = new WaitUntil(() => enemyList.Count == 0);
-        waitUnitlEnemyPrefabLoad = new WaitUntil(() => AddressableManager.Instance.EnemyLoaded);
+        waitUnitlEnemyPrefabLoad = new WaitUntil(() => addressableLoader.Loaded);
 
         player = GameObject.FindGameObjectWithTag("Player");
+
+        addressableLoader.OnResLoadAsset("Enemy","Enemy");
     }
 
     IEnumerator Start() 
@@ -83,7 +84,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         for (int i = 0; i < enemyAmount; i++)
         {
-            GameObject go = AddressableManager.Release(AddressableManager.Instance.RandomEnemyPrefabs);
+            GameObject go = PoolManager.Release(addressableLoader.RandomPrefabs);
             go.transform.position = Viewport.Instance.RandomEnemyBronPosition(player.transform.position);
 
             enemyList.Add(go);

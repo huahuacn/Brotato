@@ -487,7 +487,7 @@ GameObject:
   - component: {fileID: 1010411749}
   - component: {fileID: 1010411750}
   m_Layer: 0
-  m_Name: AddressableManager
+  m_Name: PoolManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -517,7 +517,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1010411748}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e25ac4a12dfac048a2ff2645142c778, type: 3}
+  m_Script: {fileID: 11500000, guid: 01969edfe6e7b4d8ebe6a0a9ea60f773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1365133403

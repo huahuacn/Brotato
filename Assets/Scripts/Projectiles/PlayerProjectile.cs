@@ -7,7 +7,7 @@ public class PlayerProjectile : Projectile
     TrailRenderer trail;
     protected virtual void Awake() 
     {
-        trail = GetComponentInChildren<TrailRenderer>();
+        // trail = GetComponentInChildren<TrailRenderer>();
 
         // if (moveDirection != Vector2.right) transform.GetChild(0).rotation = Quaternion.FromToRotation(Vector2.right, moveDirection);
     }
@@ -15,35 +15,26 @@ public class PlayerProjectile : Projectile
     protected override void OnEnable()
     {
         SetTarget(EnemyManager.Instance.GetNearestGameObject());
-        transform.rotation = Quaternion.identity;
 
-        if (target == null) 
-        {
-            base.OnEnable();
-        }
-        else 
-        {
-            StartCoroutine(HomingCoroutine(target));
-        }
+        StartCoroutine(MoveDirectionCoroutine(target));
+        base.OnEnable();
     }
 
     void OnDisable() 
     {
-        trail.Clear();
+        // trail.Clear();
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
         base.OnCollisionEnter2D(collision);
-        Debug.Log("Player projectile collisionEnter2D");
     }
-    public IEnumerator  HomingCoroutine(GameObject target)
+    public IEnumerator  MoveDirectionCoroutine(GameObject target)
     {
-        while(gameObject.activeSelf)
-        {
-            // if (target.activeSelf) moveDirection = (target.transform.position - transform.position).normalized;
-            yield return null;
-        }
+        yield return null;
+
+        if (target.activeSelf) moveDirection = (target.transform.position - transform.position).normalized;
+   
     }
 }
 

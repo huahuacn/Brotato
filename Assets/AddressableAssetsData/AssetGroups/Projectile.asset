@@ -21,13 +21,12 @@ MonoBehaviour:
     m_Address: PlayerProjectile1
     m_ReadOnly: 0
     m_SerializedLabels:
-    - default
+    - Projectile
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c277a8fb8e1cd47afb35113313bde40b
     m_Address: PlayerProjectile2
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Projectile
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ac42a2217c7e34efeb1b4803a3d9d1c8
     m_Address: PlayerProjectile3

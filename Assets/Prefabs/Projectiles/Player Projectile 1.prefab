@@ -287,7 +287,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -604,7 +604,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1000
+    maxNumParticles: 1
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -4777,7 +4777,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 968462d6188da594e986c3b7f576ae4a, type: 2}
+  - {fileID: 2100000, guid: 61e5210e59e544677b97ab60c901bc2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4819,7 +4819,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_VertexStreams: 00030409
-  m_Mesh: {fileID: -5444485497891700554, guid: 2b2823a4a91200b4b8e20f9956870ddf, type: 3}
+  m_Mesh: {fileID: -5444485497891700554, guid: 1df00fca8d41c451fa702837202a7aa4, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -4844,7 +4844,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4001035419152753401
 Transform:
   m_ObjectHideFlags: 0
@@ -5041,8 +5041,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
+  m_Offset: {x: 0.24909917, y: -0.011071117}
+  m_Size: {x: 1.8746223, y: 0.6900176}
   m_Direction: 1
 --- !u!114 &5456928029490907923
 MonoBehaviour:
@@ -5073,5 +5073,5 @@ MonoBehaviour:
   hitVFX: {fileID: 0}
   hitSFX: []
   damage: 10
-  moveSpeed: 10
+  moveSpeed: 13
   moveDirection: {x: 1, y: 0}

@@ -13,9 +13,10 @@ public class Player : Character
     [SerializeField] float moveSpeed = 0.1f;
     [SerializeField] float decelerationTime = 3f;
     [Header("---- FIRE ----")]
-    [SerializeField] Transform muzzleMiddle;
     [SerializeField] Transform muzzleTop;
+    [SerializeField] Transform muzzleRight;
     [SerializeField] Transform muzzleBottom;
+    [SerializeField] Transform muzzleLeft;
     [SerializeField] float fireInterval = 0.12f;
 
     float paddingX = 0.2f;
@@ -127,7 +128,7 @@ public class Player : Character
             yield return waitUntilEnemyComplete;
 
             // Instantiate(projectile, muzzle.position, Quaternion.identity);
-            PoolManager.Release(PoolManager.Instance.ProjectileLoaders.RandomPrefabs, muzzleMiddle.position);
+            PoolManager.Release(PoolManager.Instance.ProjectileLoaders.RandomPrefabs, muzzleTop.position);
 
             yield return waitForFireInterval;
 

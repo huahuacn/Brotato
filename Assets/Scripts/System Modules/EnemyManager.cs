@@ -21,7 +21,8 @@ public class EnemyManager : Singleton<EnemyManager>
     [SerializeField] bool spawnEnemy = true; // 产生敌人开关
     [SerializeField] GameObject waveUI;
     [SerializeField] float timeBetweenSpawns = 1f; // 敌人生成时间间隔
-    [SerializeField] float timeBetweenWaves = 1f; // 等待下一波时间
+    [SerializeField] float timeBetweenWaves = 40f; // 等待下一波时间
+    [SerializeField] float timeBetweenBatches = 3f; // 等待下一批次时间
     [SerializeField] int minEnemyAmount = 4;
     [SerializeField] int maxEnemyAmount = 10;
 
@@ -29,6 +30,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     int waveNumber = 1;
     int enemyAmount;
+    bool waveStart = false;
 
     List<GameObject> enemyList;
     private TransformAccessArray transformsAccessArray;
@@ -37,6 +39,7 @@ public class EnemyManager : Singleton<EnemyManager>
     GameObject player;
     WaitForSeconds waitTimeBetweenSpawns; // 等待生成间隔时间
     WaitForSeconds waitTimeBetweenWaves; // 等待下一波
+    WaitForSeconds waitTimeBetweenBatches; // 等待下一批次
     WaitUntil waitUnitlNoEnemy;
     WaitUntil waitUnitlEnemyPrefabLoad;
 
@@ -49,6 +52,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
         waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
         waitTimeBetweenWaves = new WaitForSeconds(timeBetweenWaves);
+        waitTimeBetweenBatches = new WaitForSeconds(timeBetweenBatches);
         waitUnitlNoEnemy = new WaitUntil(() => enemyList.Count == 0);
         waitUnitlEnemyPrefabLoad = new WaitUntil(() => PoolManager.Instance.EnemyLoaders.Loaded);
 
@@ -57,43 +61,64 @@ public class EnemyManager : Singleton<EnemyManager>
 
     IEnumerator Start() 
     {
-
         while (spawnEnemy)
         {
             yield return waitUnitlEnemyPrefabLoad;
 
-            yield return waitUnitlNoEnemy; // 检测敌人数量=0，产生敌人
+            // yield return waitUnitlNoEnemy; // 检测敌人数量=0，产生敌人
 
             // waveUI.SetActive(true);
-
-            yield return waitTimeBetweenWaves; // 等待下一波
+            Debug.Log("Start waves");
+           StartCoroutine(nameof(RandomlySpawnCoroutine));
 
             // waveUI.SetActive(false);
+            yield return waitTimeBetweenWaves; // 等待下一波
 
-            yield return StartCoroutine(nameof(RandomlySpawnCoroutine));
+            Debug.Log("Next waves");
+
+            RemoveAll();
         }
     }
 
     IEnumerator RandomlySpawnCoroutine()
-    {        
-        enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
+    { 
+        waveStart = true;
 
-        Transform[] transforms = new Transform[enemyAmount];
+        StopCoroutine(nameof(RandomEnemyBatches));
 
-        for (int i = 0; i < enemyAmount; i++)
-        {
-            GameObject go = PoolManager.Release(PoolManager.Instance.EnemyLoaders.RandomPrefabs);
-            go.transform.position = Viewport.Instance.RandomEnemyBronPosition(player.transform.position);
-
-            enemyList.Add(go);
-            transforms[i] = go.transform;
-        }
-
-        transformsAccessArray = new TransformAccessArray(transforms);
+        yield return StartCoroutine(nameof(RandomEnemyBatches));
 
         yield return waitTimeBetweenSpawns;
+        Debug.Log("waitTimeBetweenSpawns");
 
         waveNumber++;
+    }
+
+    IEnumerator RandomEnemyBatches()
+    {
+        while (waveStart)
+        {
+            enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
+            for (int i = 0; i < enemyAmount; i++)
+            {
+                GameObject go = PoolManager.Release(PoolManager.Instance.EnemyLoaders.RandomPrefabs);
+                go.transform.position = Viewport.Instance.RandomEnemyBronPosition(player.transform.position);
+                go.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
+
+                enemyList.Add(go);
+            }
+
+            Transform[] transforms = new Transform[enemyList.Count];
+
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                transforms[i] = enemyList[i].transform;
+            }
+
+            transformsAccessArray = new TransformAccessArray(transforms);
+
+            yield return waitTimeBetweenBatches;
+        }
     }
 
     public void RemoveFromList(GameObject enemy) 
@@ -101,9 +126,15 @@ public class EnemyManager : Singleton<EnemyManager>
         enemyList.Remove(enemy);
     }
 
+    public void RemoveAll()
+    {
+        waveStart = false;
+        enemyList.Clear();
+    }
+
     void Update() 
     {
-        if (enemyList.Count == 0) return;
+        if (enemyList.Count == 0 || !waveStart) return;
 
         enemyPositionUpdateJob = new EnemyPositionUpdateJob
         {

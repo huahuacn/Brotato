@@ -16,6 +16,11 @@ public class Enemy : Character
             Die();
         }
     }
+
+    private void OnDisable() {
+        Die();
+    }
+
     public override void Die()
     {
         EnemyManager.Instance.RemoveFromList(gameObject);

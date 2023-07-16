@@ -66,7 +66,7 @@ public class Player : Character
     {
         input.EnableGameplayInput();
 
-        StartCoroutine(nameof(FireCoroutine));
+        // StartCoroutine(nameof(FireCoroutine));
     }
 
     void Move(Vector2 moveInput)

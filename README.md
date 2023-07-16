@@ -18,3 +18,7 @@
  - com.unity.platforms.macos
  - com.unity.platforms.web
  - com.unity.platforms.windows
+
+## TODO
+- 敌人批次+波次 + UI显示
+- Boss战

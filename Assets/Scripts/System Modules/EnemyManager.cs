@@ -21,7 +21,7 @@ public class EnemyManager : Singleton<EnemyManager>
     [SerializeField] bool spawnEnemy = true; // 产生敌人开关
     [SerializeField] GameObject waveUI;
     [SerializeField] float timeBetweenSpawns = 1f; // 敌人生成时间间隔
-    [SerializeField] float timeBetweenWaves = 40f; // 等待下一波时间
+    [SerializeField] float timeBetweenWaves = 10f; // 等待下一波初始时间
     [SerializeField] float timeBetweenBatches = 3f; // 等待下一批次时间
     [SerializeField] int minEnemyAmount = 4;
     [SerializeField] int maxEnemyAmount = 10;
@@ -31,6 +31,7 @@ public class EnemyManager : Singleton<EnemyManager>
     int waveNumber = 1;
     int enemyAmount;
     bool waveStart = false;
+    public float curTimeBetweenWaves = 10f; // 等待下一波时间
 
     List<GameObject> enemyList;
     private TransformAccessArray transformsAccessArray;
@@ -38,8 +39,9 @@ public class EnemyManager : Singleton<EnemyManager>
     private JobHandle enemyPositionUpdateJobHandle;
     GameObject player;
     WaitForSeconds waitTimeBetweenSpawns; // 等待生成间隔时间
-    WaitForSeconds waitTimeBetweenWaves; // 等待下一波
     WaitForSeconds waitTimeBetweenBatches; // 等待下一批次
+    WaitUntil waitUnitlTimeZero; // 等待下一波
+    WaitForSeconds waitTimeOnSeconds; // 倒计时
     WaitUntil waitUnitlNoEnemy;
     WaitUntil waitUnitlEnemyPrefabLoad;
 
@@ -51,10 +53,13 @@ public class EnemyManager : Singleton<EnemyManager>
         
 
         waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
-        waitTimeBetweenWaves = new WaitForSeconds(timeBetweenWaves);
         waitTimeBetweenBatches = new WaitForSeconds(timeBetweenBatches);
+        waitTimeOnSeconds = new WaitForSeconds(1);
         waitUnitlNoEnemy = new WaitUntil(() => enemyList.Count == 0);
         waitUnitlEnemyPrefabLoad = new WaitUntil(() => PoolManager.Instance.EnemyLoaders.Loaded);
+        waitUnitlTimeZero = new WaitUntil(() => curTimeBetweenWaves == 0);
+
+        curTimeBetweenWaves = timeBetweenWaves;
 
         player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -63,20 +68,21 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         while (spawnEnemy)
         {
+
             yield return waitUnitlEnemyPrefabLoad;
 
-            // yield return waitUnitlNoEnemy; // 检测敌人数量=0，产生敌人
-
             // waveUI.SetActive(true);
-            Debug.Log("Start waves");
-           StartCoroutine(nameof(RandomlySpawnCoroutine));
+            yield return StartCoroutine(nameof(RandomlySpawnCoroutine));
 
             // waveUI.SetActive(false);
-            yield return waitTimeBetweenWaves; // 等待下一波
-
-            Debug.Log("Next waves");
+            // yield return waitTimeBetweenWaves; // 等待下一波
+            yield return StartCoroutine(nameof(TimeCutdown)); // 等待倒计时结束进入下一波
 
             RemoveAll();
+
+            yield return waitTimeBetweenSpawns;
+
+            waveNumber++;
         }
     }
 
@@ -86,12 +92,11 @@ public class EnemyManager : Singleton<EnemyManager>
 
         StopCoroutine(nameof(RandomEnemyBatches));
 
-        yield return StartCoroutine(nameof(RandomEnemyBatches));
+        StartCoroutine(nameof(RandomEnemyBatches));
 
         yield return waitTimeBetweenSpawns;
-        Debug.Log("waitTimeBetweenSpawns");
 
-        waveNumber++;
+
     }
 
     IEnumerator RandomEnemyBatches()
@@ -121,6 +126,16 @@ public class EnemyManager : Singleton<EnemyManager>
         }
     }
 
+     IEnumerator TimeCutdown()
+    {
+        while (curTimeBetweenWaves > 0)
+        {
+            yield return waitTimeOnSeconds;
+
+            curTimeBetweenWaves--;
+        }
+    }
+
     public void RemoveFromList(GameObject enemy) 
     {
         enemyList.Remove(enemy);
@@ -128,8 +143,17 @@ public class EnemyManager : Singleton<EnemyManager>
 
     public void RemoveAll()
     {
-        waveStart = false;
         enemyList.Clear();
+
+        CurTimeBetweenWaves();
+    }
+
+    public float CurTimeBetweenWaves()
+    {
+        waveStart = false;
+
+        curTimeBetweenWaves = timeBetweenWaves + 10 * waveNumber;
+        return curTimeBetweenWaves;
     }
 
     void Update() 

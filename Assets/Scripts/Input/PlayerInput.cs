@@ -12,6 +12,7 @@ InputActions.IGamePlayActions
 {
     public event UnityAction<Vector2> onMove = delegate{};
     public event UnityAction onStopMove = delegate{};
+    public event UnityAction onFire = delegate{};
 
     InputActions inputActions;
 
@@ -54,5 +55,10 @@ InputActions.IGamePlayActions
         if (context.performed) onMove.Invoke(context.ReadValue<Vector2>());
 
         if (context.canceled) onStopMove.Invoke();
+    }
+
+    public void OnFire(InputAction.CallbackContext context)
+    {
+        if (context.performed) onFire.Invoke();
     }
 }

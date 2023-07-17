@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    [SerializeField] int scorePoint = 100;
-    [SerializeField] int deathEnergyBonus = 3;
+    // [SerializeField] int scorePoint = 100;
+    // [SerializeField] int deathEnergyBonus = 3;
 
     void OnCollisionEnter2D(Collision2D other) 
     {

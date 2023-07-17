@@ -9,7 +9,7 @@ using Unity.Mathematics;
 public class EnemyController : MonoBehaviour
 {
     [Header("----- MOVE -----")]
-    [SerializeField] float moveSpeed = 15f;
+    // [SerializeField] float moveSpeed = 1f;
 
     // [Header("----- FIRE -----")]
     // [SerializeField] GameObject[] projectiles;
@@ -18,9 +18,6 @@ public class EnemyController : MonoBehaviour
     // [SerializeField] float maxFireInterval;
 
     // [SerializeField] AudioData projectileLaunchSFX;
-
-    float paddingX = 0.1f;
-    float paddingY = 0.1f;
 
     GameObject player;
 

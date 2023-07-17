@@ -54,19 +54,21 @@ public class Player : Character
 
         input.onMove += Move;
         input.onStopMove += StopMove;
+        input.onFire+= FireStart;
     }
 
     void OnDisable()
     {
         input.onMove -= Move;
         input.onStopMove -= StopMove;
+        input.onFire -= FireStart;
     }
 
     void Start()
     {
         input.EnableGameplayInput();
 
-        // StartCoroutine(nameof(FireCoroutine));
+        StartCoroutine(nameof(FireCoroutine));
     }
 
     void Move(Vector2 moveInput)
@@ -123,7 +125,7 @@ public class Player : Character
 
     IEnumerator FireCoroutine()
     {
-        while (true)
+        while (gameObject.activeSelf)
         {
             yield return waitUntilEnemyComplete;
 
@@ -133,6 +135,11 @@ public class Player : Character
             yield return waitForFireInterval;
 
         }
+    }
+
+    void FireStart()
+    {
+        PoolManager.Release(PoolManager.Instance.ProjectileLoaders.RandomPrefabs, muzzleTop.position);
     }
 
 }

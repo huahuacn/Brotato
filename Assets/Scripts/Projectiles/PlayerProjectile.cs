@@ -14,10 +14,18 @@ public class PlayerProjectile : Projectile
 
     protected override void OnEnable()
     {
-        SetTarget(EnemyManager.Instance.GetNearestGameObject());
+        GameObject enemy = EnemyManager.Instance.GetNearestGameObject();
+        if (enemy == null)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
 
-        StartCoroutine(MoveDirectionCoroutine(target));
+        SetTarget(enemy);
+
+        StartCoroutine(nameof(MoveDirectionCoroutine));
         base.OnEnable();
+        
     }
 
     void OnDisable() 
@@ -29,11 +37,25 @@ public class PlayerProjectile : Projectile
     {
         base.OnCollisionEnter2D(collision);
     }
-    public IEnumerator  MoveDirectionCoroutine(GameObject target)
+    public IEnumerator MoveDirectionCoroutine()
     {
         yield return null;
 
-        if (target.activeSelf) moveDirection = (target.transform.position - transform.position).normalized;
+        if (target.activeSelf) 
+        {
+            moveDirection = (target.transform.position - transform.position).normalized;
+
+            // Debug.Log("before: " + transform.rotation);
+            // transform.rotation = Quaternion.FromToRotation(Vector3.right, moveDirection);
+            // Debug.Log("after: " + transform.rotation);
+
+            Debug.Log("before: " + transform.rotation);
+
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+            Debug.Log("angle: " + angle  + "; after: " + transform.rotation);
+        } 
    
     }
 }

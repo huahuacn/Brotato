@@ -108,7 +108,7 @@ public class EnemyManager : Singleton<EnemyManager>
             {
                 GameObject go = PoolManager.Release(PoolManager.Instance.EnemyLoaders.RandomPrefabs);
                 go.transform.position = Viewport.Instance.RandomEnemyBronPosition(player.transform.position);
-                go.transform.localScale = new Vector3(0.2f,0.2f,0.2f);
+                go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
 
                 enemyList.Add(go);
             }

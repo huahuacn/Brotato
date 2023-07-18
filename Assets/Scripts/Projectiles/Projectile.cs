@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] AudioData[] hitSFX;
     [SerializeField] float damage;
     [SerializeField] protected float moveSpeed = 1f;
-    [SerializeField] protected Vector2 moveDirection;
+    [SerializeField] protected Vector3 moveDirection;
     protected GameObject target;
 
     protected virtual void OnEnable() 
@@ -42,5 +42,5 @@ public class Projectile : MonoBehaviour
     }
 
     protected void SetTarget(GameObject target) => this.target = target;
-    public void Move() => transform.Translate(moveDirection* moveSpeed * Time.deltaTime);
+    public void Move() => transform.Translate(moveDirection * moveSpeed * Time.deltaTime, Space.World);
 }

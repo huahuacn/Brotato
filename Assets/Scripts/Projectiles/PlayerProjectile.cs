@@ -44,17 +44,10 @@ public class PlayerProjectile : Projectile
         if (target.activeSelf) 
         {
             moveDirection = (target.transform.position - transform.position).normalized;
+            moveDirection.z = 0;
 
-            // Debug.Log("before: " + transform.rotation);
-            // transform.rotation = Quaternion.FromToRotation(Vector3.right, moveDirection);
-            // Debug.Log("after: " + transform.rotation);
+            transform.rotation = Quaternion.FromToRotation(Vector3.right, moveDirection);
 
-            Debug.Log("before: " + transform.rotation);
-
-            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
-            Debug.Log("angle: " + angle  + "; after: " + transform.rotation);
         } 
    
     }

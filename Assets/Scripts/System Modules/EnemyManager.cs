@@ -155,8 +155,8 @@ public class EnemyManager : Singleton<EnemyManager>
         curTimeBetweenWaves = timeBetweenWaves + 10 * waveNumber;
         return curTimeBetweenWaves;
     }
-
-    void Update() 
+    
+    void MoveToPlayer()
     {
         if (enemyList.Count == 0 || !waveStart) return;
 
@@ -169,6 +169,13 @@ public class EnemyManager : Singleton<EnemyManager>
 
         enemyPositionUpdateJobHandle = enemyPositionUpdateJob.Schedule(transformsAccessArray);
     }
+
+
+    void Update() 
+    {
+        MoveToPlayer();
+    }
+
 
     // 保证当前帧内Job执行完毕
     private void LateUpdate()

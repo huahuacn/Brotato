@@ -18,7 +18,9 @@ public struct EnemyPositionUpdateJob : IJobParallelForTransform
 
     public void Execute(int i, TransformAccess transform)
     {
-        if (Vector3.Distance(transform.position, playerPosition) >= velocity * fixDeltaTime)
+        float distance = Vector3.Distance(transform.position, playerPosition);
+
+        if (distance >= velocity * fixDeltaTime)
         {
             transform.position = Vector3.MoveTowards(transform.position, playerPosition, velocity * fixDeltaTime);
         }

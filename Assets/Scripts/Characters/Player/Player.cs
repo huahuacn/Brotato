@@ -18,6 +18,7 @@ public class Player : Character
     [SerializeField] Transform muzzleBottom;
     [SerializeField] Transform muzzleLeft;
     [SerializeField] float fireInterval = 0.12f;
+    [SerializeField] float fireRange = 1f;
 
     float paddingX = 0.2f;
     float paddingY = 0.2f;
@@ -68,7 +69,7 @@ public class Player : Character
     {
         input.EnableGameplayInput();
 
-        StartCoroutine(nameof(FireCoroutine));
+        // StartCoroutine(nameof(FireCoroutine));
     }
 
     void Move(Vector2 moveInput)

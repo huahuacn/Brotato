@@ -34,6 +34,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public float curTimeBetweenWaves = 10f; // 等待下一波时间
 
     List<GameObject> enemyList;
+    Dictionary<int, GameObject> enemyDic;
     private TransformAccessArray transformsAccessArray;
     private EnemyPositionUpdateJob enemyPositionUpdateJob;
     private JobHandle enemyPositionUpdateJobHandle;
@@ -50,6 +51,7 @@ public class EnemyManager : Singleton<EnemyManager>
         base.Awake();
 
         enemyList = new List<GameObject>();
+        enemyDic = new Dictionary<int, GameObject>();
         
 
         waitTimeBetweenSpawns = new WaitForSeconds(timeBetweenSpawns);
@@ -111,22 +113,23 @@ public class EnemyManager : Singleton<EnemyManager>
                 go.transform.localScale = new Vector3(0.5f,0.5f,0.5f);
 
                 enemyList.Add(go);
+                enemyDic.Add(go.GetHashCode(), go);
             }
 
-            Transform[] transforms = new Transform[enemyList.Count];
+            // Transform[] transforms = new Transform[enemyList.Count];
 
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                transforms[i] = enemyList[i].transform;
-            }
+            // for (int i = 0; i < enemyList.Count; i++)
+            // {
+            //     transforms[i] = enemyList[i].transform;
+            // }
 
-            transformsAccessArray = new TransformAccessArray(transforms);
+            // transformsAccessArray = new TransformAccessArray(transforms);
 
             yield return waitTimeBetweenBatches;
         }
     }
 
-     IEnumerator TimeCutdown()
+    IEnumerator TimeCutdown()
     {
         while (curTimeBetweenWaves > 0)
         {
@@ -139,11 +142,13 @@ public class EnemyManager : Singleton<EnemyManager>
     public void RemoveFromList(GameObject enemy) 
     {
         enemyList.Remove(enemy);
+        enemyDic.Remove(enemy.GetHashCode());
     }
 
     public void RemoveAll()
     {
         enemyList.Clear();
+        enemyDic.Clear();
 
         CurTimeBetweenWaves();
     }
@@ -171,10 +176,10 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
 
-    void Update() 
-    {
-        MoveToPlayer();
-    }
+    // void Update() 
+    // {
+    //     MoveToPlayer();
+    // }
 
 
     // 保证当前帧内Job执行完毕
